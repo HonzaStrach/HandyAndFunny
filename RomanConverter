@@ -1,0 +1,73 @@
+public class RomanConverter
+{
+    private static readonly Dictionary<int, string> NumberToRomanMap = new Dictionary<int, string>
+    {
+        {1000, "M"},
+        {900, "CM"},
+        {500, "D"},
+        {400, "CD"},
+        {100, "C"},
+        {90, "XC"},
+        {50, "L"},
+        {40, "XL"},
+        {10, "X"},
+        {9, "IX"},
+        {5, "V"},
+        {4, "IV"},
+        {1, "I"}
+    };
+
+    private static readonly Dictionary<char, int> RomanToNumberMap = new Dictionary<char, int>
+    {
+        {'M', 1000},
+        {'D', 500},
+        {'C', 100},
+        {'L', 50},
+        {'X', 10},
+        {'V', 5},
+        {'I', 1}
+    };
+
+    public static string NumberToRoman(int number)
+    {
+        if (number <= 0 || number >= 4000)
+        {
+            throw new ArgumentOutOfRangeException("number", "Input must be between 1 and 3999.");
+        }
+
+        var roman = "";
+        foreach (var item in NumberToRomanMap)
+        {
+            while (number >= item.Key)
+            {
+                roman += item.Value;
+                number -= item.Key;
+            }
+        }
+        return roman;
+    }
+
+    public static int RomanToNumber(string roman)
+    {
+        int number = 0;
+        int previousValue = 0;
+        foreach (char c in roman.ToUpper())
+        {
+            if (!RomanToNumberMap.ContainsKey(c))
+            {
+                throw new ArgumentException("Invalid Roman numeral");
+            }
+
+            int currentValue = RomanToNumberMap[c];
+            number += currentValue;
+
+            if (previousValue < currentValue)
+            {
+                number -= 2 * previousValue;
+            }
+
+            previousValue = currentValue;
+        }
+        return number;
+    }
+}
