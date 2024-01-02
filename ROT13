@@ -1,0 +1,24 @@
+public static class Rot13Cipher
+{
+    public static string Rot13(string input)
+    {
+        StringBuilder result = new StringBuilder();
+
+        foreach (char c in input)
+        {
+            if (char.IsLetter(c))
+            {
+                char offset = char.IsUpper(c) ? 'A' : 'a';
+                char rotatedChar = (char)(((c + 13 - offset) % 26) + offset);
+                result.Append(rotatedChar);
+            }
+            else
+            {
+                // Keep the character as is if it's not a letter
+                result.Append(c);
+            }
+        }
+
+        return result.ToString();
+    }
+}
